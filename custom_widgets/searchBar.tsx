@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react"
 import Search from "../svg/search.svg"
 import SliderHorizontal from "../svg/sliders-horizontal.svg"
 
@@ -15,8 +16,11 @@ export default function SearchBar({
             <Image src={Search} width={28} height={28} alt="null" className="invert brightness-0"/>
             <div className="flex flex-row w-full justify-between items-center">
                 <input placeholder="Search in Drive" type="text" className="outline-none w-full h-full" value={value} onChange={onChange}/>
-                <Image src={SliderHorizontal} width={28} height={28} alt="null" className="invert brightness-0"/>
+                <Image src={SliderHorizontal} width={28} height={28} alt="null" className="invert brightness-0"/> 
             </div>
         </div>
     )
 }
+
+
+
