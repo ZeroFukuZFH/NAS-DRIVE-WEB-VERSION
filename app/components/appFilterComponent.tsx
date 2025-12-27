@@ -11,9 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-
 import { CheckIcon, ChevronDown, ChevronRight, FolderOpen, InfoIcon, LayoutGridIcon, List, X } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { SortByModifiedContext } from "../providers/SortByModifiedProvider";
 import { SortByTypeContext } from "../providers/SortByTypeProvider";
 import { LayoutContext } from "../providers/LayoutProvider";
