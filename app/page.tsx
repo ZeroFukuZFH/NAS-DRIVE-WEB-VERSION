@@ -1,17 +1,17 @@
 "use client";
 
-import NavigationBar, { NavigationBarChildren } from "@/custom_widgets/navigationBar";
-import UploadButton from "../custom_widgets/uploadButton";
-import StorageCapacity from "@/custom_widgets/storageCapacity";
+// REACT
 import { useState } from "react";
-import { MyDriveGridLayout, MyDriveListLayout } from "./components/nav_options/myDrive";
+
+// USER-DEFINED
 import AppBar from "./components/appBar";
-import ButtonGroup, { ButtonGroupChildren } from "@/custom_widgets/buttonGroup";
-import Image from "next/image";
-import GridLayout from "../../svg/layout-grid.svg";
-import ListLayout from "../../svg/list.svg";
-import Check from "../../svg/check.svg";
-import Info from "../../svg/info.svg";
+import AppSideBar  from "./components/appSideBar";
+import { AppGridLayout, AppListLayout } from "./components/appLayout";
+import  AppFilterComponent  from "./components/appFilterComponent"
+import { SearchBarContext } from "./providers/SearchBarProvider";
+import { SortByModifiedContext } from "./providers/SortByModifiedProvider";
+import { SortByTypeContext } from "./providers/SortByTypeProvider";
+import { LayoutContext } from "./providers/LayoutProvider";
 
 const sampleData = [
   {title:"nigga",dateModified:"May 11, 2024"},
@@ -20,128 +20,36 @@ const sampleData = [
 ]
 
 export default function Page() {
+
   const [layout, setLayout] = useState<boolean>(true);
+  const [mod,setMod] = useState<string>("Modified");
+  const [type,setType] = useState<string>("Type");
   const [search, setSearch] = useState<string>("");
-
-  const handleToggle = () => {
-    setLayout((prev) => !prev);
-  };
-
-  const handleSearch = (event:React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value)
-  }
-
+  
   return (
-    <div className="min-h-screen min-w-screen p-4 bg-[rgb(26,26,26)]">
-      <AppBar value={search} onChange={handleSearch}/>
+    <LayoutContext.Provider value={{layout,setLayout}}>
+    <SearchBarContext.Provider value={{search,setSearch}}>
+    <SortByModifiedContext.Provider value={{mod,setMod}}>
+    <SortByTypeContext.Provider value={{type,setType}}>
+      <div className="min-h-screen min-w-screen p-4 bg-[rgb(26,26,26)]">
+        <AppBar/>
+        
+        <div className="flex flex-wrap flex-row">
+          <AppSideBar/>
 
-      <div className="flex flex-wrap flex-row">
-        <div className="px-2 py-2 flex flex-1 flex-wrap flex-col max-w-[10vw] min-w-70 gap-4">
-          <UploadButton />
-          <NavigationBar>
-            <NavigationBarChildren>
-              My Drive
-          
-            </NavigationBarChildren>
-            <NavigationBarChildren>
-              Recent
-            </NavigationBarChildren>
-            <NavigationBarChildren>
-              Trash
-            </NavigationBarChildren>
-          </NavigationBar>
-          <StorageCapacity />
-        </div>
+          <div className="m-2 flex flex-col flex-3 px-2 py-4 gap-2 w-full h-[88vh] rounded-2xl bg-[rgb(20,20,20)]">
+            <AppFilterComponent />
 
-        <div className="m-2 flex flex-col flex-3 px-2 py-4 gap-2 w-full h-[88vh] rounded-2xl bg-[rgb(20,20,20)]">
-          <DriveBody handleToggle={handleToggle} toggle={layout} />
-
-          {layout ? <MyDriveListLayout files={sampleData}/> : <MyDriveGridLayout files={sampleData}/>}
+            {layout ? <AppListLayout files={sampleData}/> : <AppGridLayout files={sampleData}/>}
+          </div>
         </div>
       </div>
-    </div>
+    </SortByTypeContext.Provider>
+    </SortByModifiedContext.Provider>
+    </SearchBarContext.Provider>
+    </LayoutContext.Provider>
   );
 }
 
-function DriveBody({
-  handleToggle,
-  toggle,
-}: {
-  handleToggle: () => void;
-  toggle: boolean;
-}) {
-
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="w-full flex flex-wrap flex-row justify-between">
-        {"My Drive (change later)"}
-        <div className="flex flex-row flex-wrap items-center h-full gap-2">
-          <ButtonGroup>
-            <ButtonGroupChildren
-              onClick={handleToggle}
-              className={toggle ? "bg-[rgb(0,65,108)]" : ""}
-            >
-              {toggle && (
-                <Image
-                  src={Check}
-                  width={16}
-                  height={16}
-                  alt="selected"
-                  className="invert brightness-0"
-                />
-              )}
-              <Image
-                src={GridLayout}
-                width={16}
-                height={16}
-                alt="grid layout"
-                className="invert brightness-0"
-              />
-            </ButtonGroupChildren>
-
-            <ButtonGroupChildren
-              onClick={handleToggle}
-              className={!toggle ? "bg-[rgb(0,65,108)]" : ""}
-            >
-              <Image
-                src={ListLayout}
-                width={16}
-                height={16}
-                alt="list layout"
-                className="invert brightness-0"
-              />
-              {!toggle && (
-                <Image
-                  src={Check}
-                  width={16}
-                  height={16}
-                  alt="selected"
-                  className="invert brightness-0"
-                />
-              )}
-            </ButtonGroupChildren>
-          </ButtonGroup>
-
-          <button title="information" className="cursor-pointer">
-            <Image
-              src={Info}
-              width={20}
-              height={20}
-              alt="info"
-              className="invert brightness-0"
-            />
-          </button>
-        </div>
-      </div>
-
-      <div className="flex flex-row gap-2">
-        {"Type"}
-        {"Modified"}
-      </div>
-
-    </div>
-  );
-}
- 
 
 

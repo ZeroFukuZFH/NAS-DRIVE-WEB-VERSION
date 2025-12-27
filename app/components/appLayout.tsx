@@ -1,9 +1,5 @@
-import Image from "next/image"
-import EllipsisVertical from "../../../svg/ellipsis-vertical.svg"
 import { useState } from "react"
-import ArrowUp from "../../../svg/arrow-up.svg";
-import ArrowDown from "../../../svg/arrow-down.svg";
-import SortOptions from "../../../svg/chart-no-axes-column-decreasing.svg";
+import { ArrowDownIcon, ArrowUpIcon, ChartNoAxesColumnDecreasing, EllipsisVertical } from "lucide-react";
 
 interface FileDataProps {
     image?:string,
@@ -12,7 +8,7 @@ interface FileDataProps {
     dateModified?:string,
 }
 
-export function MyDriveListLayout({
+export function AppListLayout({
     files,
 }:{
     files:FileDataProps[]
@@ -36,13 +32,7 @@ export function MyDriveListLayout({
                 className="cursor-pointer flex flex-9 items-center flex-row gap-2 w-full p-2 hover:bg-[rgb(255,255,255,0.1)] rounded-t-lg"
                 >
                 <h1>Name</h1>
-                <Image
-                    src={sortAZ ? ArrowUp : ArrowDown}
-                    width={20}
-                    height={20}
-                    alt="sort direction"
-                    className="rounded-2xl bg-[rgb(255,255,255,0.1)] invert "
-                />
+                {sortAZ ? <ArrowUpIcon/> : <ArrowDownIcon/>}
                 </button>
 
                 <button
@@ -57,13 +47,7 @@ export function MyDriveListLayout({
                 className="cursor-pointer flex flex-row gap-2 flex-1 p-2 justify-center"
                 >
                 <div className="rounded-2xl hover:bg-[rgb(255,255,255,0.1)] p-1">
-                    <Image
-                    src={SortOptions}
-                    width={20}
-                    height={20}
-                    alt="options"
-                    className="rotate-90 invert"
-                    />
+                    <ChartNoAxesColumnDecreasing className="rotate-90"/>
                 </div>
                 </button>
             </div>
@@ -71,14 +55,14 @@ export function MyDriveListLayout({
                 <div key={index} className="w-full flex flex-row justify-between items-center border-b-[1] px-2 py-4 border-solid border-b-white hover:bg-[rgb(255,255,255,0.1)] cursor-pointer">
                     <div className="flex-9">{item.title}</div>
                     <div className="flex-3">{item.dateModified}</div>
-                    <Image src={EllipsisVertical} width={20} height={20} alt="null" className="invert flex flex-1 justify-center max-h-5"/>
+                    <EllipsisVertical/>
                 </div>
             ))}
         </div>
     )
 }
 
-export function MyDriveGridLayout({
+export function AppGridLayout({
     files,
 }:{
     files:FileDataProps[]
@@ -88,7 +72,7 @@ export function MyDriveGridLayout({
             {files.map((item,index)=>(
                 <div key={index} className=" flex flex-row w-2xs justify-between items-center p-2 hover:bg-[rgb(255,255,255,0.1)] cursor-pointer rounded-lg">
                     <div className="flex-9">{item.title}</div>
-                    <Image src={EllipsisVertical} width={20} height={20} alt="null" className="invert flex flex-1 justify-center max-h-5"/>
+                    <EllipsisVertical/>
                 </div>
             ))}
         </div>

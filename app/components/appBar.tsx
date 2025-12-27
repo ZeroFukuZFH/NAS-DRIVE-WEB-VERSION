@@ -2,21 +2,22 @@ import SearchBar from "@/custom_widgets/searchBar";
 import Settings from "../../svg/settings.svg"
 import Image from "next/image";
 import Link from "next/link";
+import { SearchBarContext } from "../providers/SearchBarProvider";
+import { useContext } from "react";
 
-export default function AppBar({
-  value,
-  onChange,
-}:{
-  value:string,
-  onChange:(e: React.ChangeEvent<HTMLInputElement>) => void,
-}){
-   
+export default function AppBar(){
+  const { search, setSearch } = useContext(SearchBarContext);
+
+  const handleSearch = (event:React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value)
+  }
+
   return (
     <div>
         <div className="w-full flex flex-row justify-center items-center gap-2 z-10">
         <SearchBar 
-            value={value} 
-            onChange={onChange}
+            value={search} 
+            onChange={handleSearch}
         />
         <button 
             title="settings" 
