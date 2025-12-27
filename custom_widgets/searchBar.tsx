@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+
 import Search from "../svg/search.svg"
 import SliderHorizontal from "../svg/sliders-horizontal.svg"
 
