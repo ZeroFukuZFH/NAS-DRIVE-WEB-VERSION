@@ -1,9 +1,8 @@
 import SearchBar from "@/custom_widgets/searchBar";
-import Settings from "../../svg/settings.svg"
-import Image from "next/image";
 import Link from "next/link";
 import { SearchBarContext } from "../providers/SearchBarProvider";
 import { useContext } from "react";
+import { SettingsIcon } from "lucide-react";
 
 export default function AppBar(){
   const { search, setSearch } = useContext(SearchBarContext);
@@ -21,16 +20,10 @@ export default function AppBar(){
         />
         <button 
             title="settings" 
-            className="hover:bg-[rgb(255,255,255,0.1)] p-2 max-h-10 rounded-4xl cursor-pointer"
+            className="p-2 max-h-10 rounded-4xl cursor-pointer"
         >
         <Link href={"/settings"}>
-            <Image 
-            src={Settings} 
-            width={20} 
-            height={20} 
-            alt="null"
-            className="invert brightness-0"
-            />
+            <SettingsIcon/>
         </Link>
         </button>
         </div>

@@ -2,12 +2,13 @@
 
 import NavigationBar, { NavigationBarChildren } from "@/custom_widgets/navigationBar";
 import AppBar from "./components/appBar";
-import { ReactNode } from "react";
+import { JSX, ReactNode, useState } from "react";
+import General from "./components/appGeneralSettings";
 
 export default function Page() {
-  
+  const [section, setSection] = useState<JSX.Element>(<General/>)
   return (
-    <div className="min-h-screen min-w-screen p-4 bg-[rgb(26,26,26)]">
+    <div className="min-h-screen min-w-screen p-4">
       <AppBar/>
         <div className="p-2 flex flex-row">
             <div className="min-w-60">
@@ -20,9 +21,9 @@ export default function Page() {
                     </NavigationBarChildren>
                 </NavigationBar>
             </div>
-            <div className="m-2 flex flex-col flex-3 px-2 py-4 gap-2 w-full h-[88vh] rounded-2xl bg-[rgb(20,20,20)]">
+            <div className="m-2 flex flex-col flex-3 px-2 py-4 gap-2 w-full h-[88vh] rounded-2xl ">
                 <SettingsSection>
-
+                    {section}
                 </SettingsSection>
             </div>
         </div>

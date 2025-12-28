@@ -32,7 +32,7 @@ export function NavigationBarChildren({
   return(
     <li>
       <button
-        className={`px-4 py-1 rounded-2xl min-w-28 w-full cursor-pointer text-[14px] text-left active:bg-[rgb(0,65,108)] text-white hover:bg-[rgba(255,255,255,0.2)] ${className}`}
+        className={`px-4 py-1 rounded-2xl min-w-28 w-full cursor-pointer text-[14px] text-left active:bg-[rgb(0,65,108)]  hover:bg-[rgba(255,255,255,0.2)] ${className}`}
         onClick={onClick}
       >
         {children}

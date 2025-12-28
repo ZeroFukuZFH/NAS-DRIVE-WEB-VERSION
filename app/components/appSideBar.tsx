@@ -48,7 +48,7 @@ function StorageCapacity() {
         style={{ width: `${usedPercentage}%` }}
         />
       </div>
-      <h1 className="mt-2 text-white text-[14px]">
+      <h1 className="mt-2 text-[14px]">
         {storage_used} of {total_storage} GB used
       </h1>
     </div>
@@ -59,12 +59,12 @@ function UploadButton(){
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="cursor-pointer w-28 w min-h-14 text-[14px] bg-[rgb(48,50,52)] flex flex-wrap items-center justify-center shadow-black shadow-4xl rounded-2xl gap-1"> 
+        <button className="cursor-pointer w-28 w min-h-14 text-[14px] flex flex-wrap items-center justify-center shadow-black shadow-4xl rounded-2xl gap-1"> 
           <Plus/>
           New
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="-translate-y-15 w-56 mx-2 rounded-none border-none bg-[rgb(29,29,29)]">
+      <DropdownMenuContent className="-translate-y-15 w-56 mx-2 rounded-none border-none">
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <FolderPlus/>

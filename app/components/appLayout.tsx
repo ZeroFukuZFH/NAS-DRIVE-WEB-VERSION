@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { ArrowDownIcon, ArrowUpIcon, ChartNoAxesColumnDecreasing, EllipsisVertical } from "lucide-react";
-
+import { ArrowDownIcon, ArrowUpIcon, ChartNoAxesColumnDecreasing, EllipsisVertical, HardDrive, UploadCloudIcon } from "lucide-react";
+import { useFileDrop } from "../custom-hooks/useFileDrop";
 interface FileDataProps {
     image?:string,
     title?:string,
@@ -12,20 +12,28 @@ export function AppListLayout({
     files,
 }:{
     files:FileDataProps[]
-}){
-      const [sortAZ, setSortAZ] = useState(true);
-      const [sortNewOld, setSortNewOld] = useState(true);
-      const [SortOpt, setSortOpt] = useState(true);
-    
-      const handleSortAZ = () => {
-        setSortAZ((prev) => !prev);
-      };
-    
-      const handleSortNewOld = () => {
-        setSortNewOld((prev) => !prev);
-      };
+}){ 
+    const [sortAZ, setSortAZ] = useState(false);
+    const [sortNewOld, setSortNewOld] = useState(false);
+
+    const handleSortAZ = () => {
+        setSortAZ(prev => !prev);        
+    }
+
+    const handleSortNewOld = () => {
+        setSortNewOld(prev => !prev);
+    }
+
+    const { isDragging } = useFileDrop((files)=>{
+        console.log("Dropped Files :",files);
+        //POST REQUEST
+    });
+
     return (
-        <div className="w-full flex flex-wrap flex-row justify-between text-[14px]">
+        <DragOverlayWrapper show={isDragging}>
+        <div 
+          className="w-full flex flex-wrap flex-row justify-between text-[14px]"
+        >
             <div className="w-full border-s-[rgb(255,255,255,0.1)] border-b-2 flex text-[14px]">
                 <button
                 onClick={handleSortAZ}
@@ -40,6 +48,7 @@ export function AppListLayout({
                 className="cursor-pointer flex flex-3 flex-row items-center gap-2 w-full p-2 hover:bg-[rgb(255,255,255,0.1)] rounded-t-lg"
                 >
                 <h1>Date Modified</h1>
+                {sortNewOld ? <ArrowUpIcon/> : <ArrowDownIcon/>}
                 </button>
 
                 <button
@@ -59,6 +68,7 @@ export function AppListLayout({
                 </div>
             ))}
         </div>
+        </DragOverlayWrapper>
     )
 }
 
@@ -67,14 +77,56 @@ export function AppGridLayout({
 }:{
     files:FileDataProps[]
 }){
+    const { isDragging } = useFileDrop((files)=>{
+        console.log("Dropped Files :",files);
+        //POST REQUEST
+    });
     return (
-        <div className="w-full flex flex-wrap flex-row text-[14px]">
+        <DragOverlayWrapper show={isDragging}>
+            <div className="w-full flex flex-wrap flex-row text-[14px] ">
             {files.map((item,index)=>(
                 <div key={index} className=" flex flex-row w-2xs justify-between items-center p-2 hover:bg-[rgb(255,255,255,0.1)] cursor-pointer rounded-lg">
                     <div className="flex-9">{item.title}</div>
                     <EllipsisVertical/>
                 </div>
             ))}
-        </div>
+            </div>
+        </DragOverlayWrapper>
     )
+}
+
+interface DragOverlayWrapperProps {
+  show: boolean;
+  children: React.ReactNode;
+};
+
+function DragOverlayWrapper({ show, children }: DragOverlayWrapperProps) {
+  return (
+    <div className="relative w-full h-full">
+      {children}
+      {show && <Overlay />}
+    </div>
+  );
+}
+
+
+function Overlay() {
+  return (
+    <div className="absolute inset-0 z-20 bg-blue-500/25 border-2 border-blue-500 pointer-events-none flex justify-center items-end pb-10">
+        <Helper/>
+    </div>
+  );
+}
+
+function Helper() {
+  return (
+    <div className="flex flex-col w-64 rounded-2xl bg-blue-500 px-4 py-3 text-sm font-medium shadow-md justify-center items-center gap-2">
+      <UploadCloudIcon/>
+      Drop files to upload them to
+      <div className="flex flex-row gap-2">
+        <HardDrive/>
+        My Drive
+      </div>
+    </div>
+  );
 }

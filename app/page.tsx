@@ -14,9 +14,9 @@ import { SortByTypeContext } from "./providers/SortByTypeProvider";
 import { LayoutContext } from "./providers/LayoutProvider";
 
 const sampleData = [
-  {title:"nigga",dateModified:"May 11, 2024"},
-  {title:"nigga",dateModified:"May 11, 2024"},
-  {title:"nigga",dateModified:"May 11, 2024"},
+  {title:"Albert",dateModified:"May 11, 2024"},
+  {title:"Binance",dateModified:"May 12, 2024"},
+  {title:"Carmen",dateModified:"May 13, 2024"},
 ]
 
 export default function Page() {
@@ -25,19 +25,20 @@ export default function Page() {
   const [mod,setMod] = useState<string>("Modified");
   const [type,setType] = useState<string>("Type");
   const [search, setSearch] = useState<string>("");
+
   
   return (
     <LayoutContext.Provider value={{layout,setLayout}}>
     <SearchBarContext.Provider value={{search,setSearch}}>
     <SortByModifiedContext.Provider value={{mod,setMod}}>
     <SortByTypeContext.Provider value={{type,setType}}>
-      <div className="min-h-screen min-w-screen p-4 bg-[rgb(26,26,26)]">
+      <div className="min-h-screen min-w-screen p-4">
         <AppBar/>
         
         <div className="flex flex-wrap flex-row">
           <AppSideBar/>
 
-          <div className="m-2 flex flex-col flex-3 px-2 py-4 gap-2 w-full h-[88vh] rounded-2xl bg-[rgb(20,20,20)]">
+          <div className="m-2 flex flex-col flex-3 px-2 py-4 gap-2 w-full h-[88vh] rounded-2xl">
             <AppFilterComponent />
 
             {layout ? <AppListLayout files={sampleData}/> : <AppGridLayout files={sampleData}/>}

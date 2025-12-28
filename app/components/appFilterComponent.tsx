@@ -1,15 +1,7 @@
 import ButtonGroup, { ButtonGroupChildren } from "@/custom_widgets/buttonGroup";
 
 // SHADCN
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 import { CheckIcon, ChevronDown, ChevronRight, FolderOpen, InfoIcon, LayoutGridIcon, List, X } from "lucide-react";
 import { useContext } from "react";
@@ -53,155 +45,175 @@ export default function AppFilterComponent() {
   );
 }
  
-    function TypeFilter() {
-      const { type, setType } = useContext(SortByTypeContext);
+function TypeFilter() {
+  const { type, setType } = useContext(SortByTypeContext);
 
-      const handleTypeChange = (type:string) => {
-        setType(type)
-      }
+  const handleTypeChange = (type: string) => {
+    setType(type);
+  };
 
-      const handleDefaultType = (e: React.MouseEvent) => {
-        e.stopPropagation()
-        setType("Type")
-      }
+  const handleDefaultType = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setType("Type");
+  };
 
-      return (
-      <div className="flex flex-row gap-1">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div>
-              <button
-              className={ 
-                "px-4 py-2 flex flex-row gap-2 w-32 justify-center border border-solid border-white transition-colors hover:bg-white/10 items-center "
-                + (type === "Type" ? "rounded-lg" : "rounded-l-lg")
-              }
-            >
-              <span className="truncate">{type}</span>
-              <ChevronDown />
-            </button>
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="shadow-2xl shadow-black bg-[rgb(20,20,20)] border-none">
-            <DropdownMenuGroup className=" w-56 ">
-              {typeData.map((item, index) => 
-                <DropdownMenuItem key={index} onClick={()=>handleTypeChange(item.title)}>
-                  {item.icon}
-                  {item.title}
-                </DropdownMenuItem>)}
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        {type !== "Type" && 
-        <button title="close" className="rounded-r-lg px-2 flex flex-row gap-2 border justify-center border-white transition-colors hover:bg-white/10 items-center" onClick={handleDefaultType}>
-          <X/>
-        </button>
-        }
-      </div>);
-    }
-
-    function ToggleDisplay() {
-      const { layout,setLayout } = useContext(LayoutContext);
-
-      const handleLayout = () => {
-        setLayout(prev => !prev);
-      }
-
-      return (<div className="flex flex-row flex-wrap items-center h-full gap-2">
-          <ButtonGroup>
-            <ButtonGroupChildren onClick={handleLayout} className={layout ? "bg-[rgb(0,65,108)]" : ""}>
-              {layout && <CheckIcon />}
-              <LayoutGridIcon />
-            </ButtonGroupChildren>
-
-            <ButtonGroupChildren onClick={handleLayout} className={!layout ? "bg-[rgb(0,65,108)]" : ""}>
-              <List />
-              {!layout && <CheckIcon />}
-            </ButtonGroupChildren>
-          </ButtonGroup>
-
-          <button title="information" className="cursor-pointer">
-            <InfoIcon />
-          </button>
-        </div>);
-    }
-
-    function AddNew() {
-      return (<DropdownMenu>
+  return (
+    <div className="flex flex-row gap-1">
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className="px-4 py-2 hover:bg-[rgba(255,255,255,0.1)] rounded-2xl flex flex-row gap-2">
-            My Drive
+          <button
+            className={`px-4 py-2 flex flex-row gap-2 w-32 justify-center border border-solid border-white transition-colors hover:bg-white/10 items-center ${
+              type === "Type" ? "rounded-lg" : "rounded-l-lg"
+            }`}
+          >
+            <span className="truncate">{type}</span>
             <ChevronDown />
           </button>
         </DropdownMenuTrigger>
-
-        <DropdownMenuContent className="w-56 bg-[rgb(29,29,29)]" align="start">
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              New folder
-              <DropdownMenuShortcut></DropdownMenuShortcut>
-            </DropdownMenuItem>
+        <DropdownMenuContent className="shadow-mg shadow-black  border-none">
+          <DropdownMenuGroup className="w-56">
+            {typeData.map((item, index) => (
+              <DropdownMenuItem key={index} onClick={() => handleTypeChange(item.title)}>
+                {item.icon}
+                {item.title}
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
-          <DropdownMenuSeparator />
+      {type !== "Type" && (
+        <button
+          title="close"
+          className="rounded-r-lg px-2 flex flex-row gap-2 border justify-center border-white transition-colors hover:bg-white/10 items-center"
+          onClick={handleDefaultType}
+        >
+          <X />
+        </button>
+      )}
+    </div>
+  );
+}
 
-          <DropdownMenuGroup>
+function ModifiedFilter() {
+  const { mod, setMod } = useContext(SortByModifiedContext);
+
+  const handleModChange = (mod: string) => {
+    setMod(mod);
+  };
+
+  const handleDefaultMod = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMod("Modified");
+  };
+
+  return (
+    <div className="flex flex-row gap-1">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            className={`px-4 py-2 flex flex-row gap-2 w-32 justify-center border border-solid border-white transition-colors hover:bg-white/10 items-center ${
+              mod === "Modified" ? "rounded-lg" : "rounded-l-lg"
+            }`}
+          >
+            <span className="truncate">{mod}</span>
+            <ChevronDown />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="shadow-mg shadow-black  border-none">
+          <DropdownMenuGroup className="w-56">
+            {modifiedData.map((item, index) => (
+              <DropdownMenuItem key={index} onClick={() => handleModChange(item.title)}>
+                {item.title}
+              </DropdownMenuItem>
+            ))}
             <DropdownMenuItem>
-              File upload
-              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem>
-              Folder upload
-              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+              Custom date range
+              <ChevronRight />
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
-      </DropdownMenu>);
-    }
+      </DropdownMenu>
 
-    function ModifiedFilter() {
-      const { mod, setMod } = useContext(SortByModifiedContext);
-
-      const handleModChange = (mod:string) => {
-        setMod(mod)
-      }
-
-      const handleDefaultMod = () => {
-        setMod("Modified");
-      }
-      return (
-        <div className="flex flex-row gap-1">
-          <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-              <button
-              className={ 
-                "px-4 py-2 flex flex-row gap-2 w-32 justify-center border border-solid border-white transition-colors hover:bg-white/10 items-center "
-                + (mod === "Modified" ? "rounded-lg" : "rounded-l-lg")
-              }
-            >
-              <span className="truncate">{mod}</span>
-              <ChevronDown />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="shadow-2xl shadow-black bg-[rgb(20,20,20)] border-none">
-            <DropdownMenuGroup className=" w-56 ">
-              {modifiedData.map((item, index) => 
-                <DropdownMenuItem key={index} onClick={() => handleModChange(item.title)}>
-                  {item.title}
-                </DropdownMenuItem>)}
-              <DropdownMenuItem>
-                Custom date range
-                <ChevronRight />
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        {mod !== "Modified" && 
-        <button title="close" className="rounded-r-lg px-2 flex flex-row gap-2 border justify-center border-white transition-colors hover:bg-white/10 items-center" onClick={handleDefaultMod}>
-          <X/>
+      {mod !== "Modified" && (
+        <button
+          title="close"
+          className="rounded-r-lg px-2 flex flex-row gap-2 border justify-center border-white transition-colors hover:bg-white/10 items-center"
+          onClick={handleDefaultMod}
+        >
+          <X />
         </button>
-        }
-        </div>
-        );
-    }
-        
+      )}
+    </div>
+  );
+}       
+
+function AddNew() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="px-4 py-2 hover:bg-[rgba(255,255,255,0.1)] rounded-2xl flex flex-row gap-2">
+          My Drive
+          <ChevronDown />
+        </button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent className="w-56 bg-[rgb(29,29,29)]" align="start">
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            New folder
+            <DropdownMenuShortcut></DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            File upload
+            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem>
+            Folder upload
+            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function ToggleDisplay() {
+  const { layout, setLayout } = useContext(LayoutContext);
+
+  const handleLayout = () => {
+    setLayout((prev) => !prev);
+  };
+
+  return (
+    <div className="flex flex-row flex-wrap items-center h-full gap-2">
+      <ButtonGroup>
+        <ButtonGroupChildren
+          onClick={handleLayout}
+          className={layout ? "bg-[rgb(0,65,108)]" : ""}
+        >
+          {layout && <CheckIcon />}
+          <LayoutGridIcon />
+        </ButtonGroupChildren>
+
+        <ButtonGroupChildren
+          onClick={handleLayout}
+          className={!layout ? "bg-[rgb(0,65,108)]" : ""}
+        >
+          <List />
+          {!layout && <CheckIcon />}
+        </ButtonGroupChildren>
+      </ButtonGroup>
+
+      <button title="information" className="cursor-pointer">
+        <InfoIcon />
+      </button>
+    </div>
+  );
+}
