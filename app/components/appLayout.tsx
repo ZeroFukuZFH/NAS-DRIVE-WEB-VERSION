@@ -1,18 +1,23 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { ArrowDownIcon, ArrowUpIcon, ChartNoAxesColumnDecreasing, EllipsisVertical, HardDrive, UploadCloudIcon } from "lucide-react";
 import { useFileDrop } from "../custom-hooks/useFileDrop";
-interface FileDataProps {
-    image?:string,
-    title?:string,
-    fileType?:string,
-    dateModified?:string,
-}
+import { SortByTypeContext } from "../providers/SortByTypeProvider";
+import { SortByModifiedContext } from "../providers/SortByModifiedProvider";
+import useFilterFiles from "../custom-hooks/useFilterFiles";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { DropdownMenuGroup, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { FileDataProps } from "../providers/fileDataProvider";
 
 export function AppListLayout({
     files,
 }:{
     files:FileDataProps[]
 }){ 
+    const { mod } = useContext(SortByModifiedContext);
+    const { type } = useContext(SortByTypeContext);
+
+    const filesToDisplay : FileDataProps[] = useFilterFiles(files,type,mod);
+
     const [sortAZ, setSortAZ] = useState(false);
     const [sortNewOld, setSortNewOld] = useState(false);
 
@@ -60,11 +65,11 @@ export function AppListLayout({
                 </div>
                 </button>
             </div>
-            {files.map((item,index)=>(
+            {filesToDisplay.map((item,index)=>(
                 <div key={index} className="w-full flex flex-row justify-between items-center border-b-[1] px-2 py-4 border-solid border-b-white hover:bg-[rgb(255,255,255,0.1)] cursor-pointer">
                     <div className="flex-9">{item.title}</div>
                     <div className="flex-3">{item.dateModified}</div>
-                    <EllipsisVertical/>
+                    <FileOptions/>
                 </div>
             ))}
         </div>
@@ -77,6 +82,12 @@ export function AppGridLayout({
 }:{
     files:FileDataProps[]
 }){
+
+    const { mod } = useContext(SortByModifiedContext);
+    const { type } = useContext(SortByTypeContext);
+
+    const filesToDisplay : FileDataProps[] = useFilterFiles(files,type,mod);
+
     const { isDragging } = useFileDrop((files)=>{
         console.log("Dropped Files :",files);
         //POST REQUEST
@@ -84,10 +95,10 @@ export function AppGridLayout({
     return (
         <DragOverlayWrapper show={isDragging}>
             <div className="w-full flex flex-wrap flex-row text-[14px] ">
-            {files.map((item,index)=>(
+            {filesToDisplay.map((item,index)=>(
                 <div key={index} className=" flex flex-row w-2xs justify-between items-center p-2 hover:bg-[rgb(255,255,255,0.1)] cursor-pointer rounded-lg">
                     <div className="flex-9">{item.title}</div>
-                    <EllipsisVertical/>
+                    <FileOptions/>
                 </div>
             ))}
             </div>
@@ -129,4 +140,39 @@ function Helper() {
       </div>
     </div>
   );
+}
+
+interface FileOptionsDataProps {
+    title:string
+}
+
+const FileOptionsData : FileOptionsDataProps[] =  [
+    {title:"download"},
+    {title:"rename"},
+    {title:"file information"},
+    {title:"add to starred"},
+]
+
+function FileOptions(){
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <button 
+                  title="file options"
+                  className="cursor-pointer"
+                >
+                    <EllipsisVertical/>
+                </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuGroup>
+                    {FileOptionsData.map((item,index)=>(
+                    <DropdownMenuItem key={index}>
+                    {item.title}
+                    </DropdownMenuItem>
+                    ))}
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
 }

@@ -1,7 +1,9 @@
 
 import { CornerDownLeft, SearchIcon, SlidersHorizontalIcon, FolderOpen,ChevronRight, X, ChevronDown } from "lucide-react"
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { FileDataContext, FileDataProps } from "@/app/providers/fileDataProvider";
+import useFilterFiles from "@/app/custom-hooks/useFilterFiles";
 
 const typeData = [
   {title:"Folders",icon:<FolderOpen/>},
@@ -24,40 +26,73 @@ const modifiedData = [
 ]
 
 export default function SearchBar({
-    value,
-    onChange,
-}:{
-    value:string,
-    onChange:(e: React.ChangeEvent<HTMLInputElement>) => void,
-}){
-    const [type,setType] = useState<string>("Type");
-    const [mod,setMod] = useState<string>("Modified");
-    return(
-        <div className="rounded-3xl flex flex-col px-4 py-3 gap-2 w-full items-center justify-center">
-            <div className="flex flex-row w-full justify-between items-center gap-2">
-                <SearchIcon/>
-                <input placeholder="Search in Drive" type="text" className="outline-none w-full h-full" value={value} onChange={onChange}/>
-                <SlidersHorizontalIcon/>
-            </div>
-            {value.length > 0 &&
-            <div className=" w-full flex flex-col">
-                <div className="flex flex-row w-full">
-                    <TypeFilter filter={type} setFilter={setType}/>
-                    <ModifiedFilter filter={mod} setFilter={setMod}/>
-                </div>
-                <div className="flex flex-row justify-between w-full">
-                    <button className="cursor-pointer">
-                    Advanced search
-                    </button>
-                    <button className="flex flex-row gap-2 cursor-pointer">
-                        <CornerDownLeft/>
-                        All search results
-                    </button>
-                </div>
-            </div>
-            }
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+  const data = useContext(FileDataContext) ?? [];
+
+  const [type, setType] = useState("Type");
+  const [mod, setMod] = useState("Modified");
+
+  const filteredData : FileDataProps[] = useFilterFiles(data, type, mod, value)
+
+  return (
+    <div className="relative w-full max-w-xl">
+      {/* Search input */}
+      <div className="rounded-3xl flex flex-row px-4 py-3 gap-2 items-center bg-white dark:bg-neutral-900">
+        <SearchIcon className="text-neutral-500" />
+        <input
+          placeholder="Search in Drive"
+          type="text"
+          className="outline-none w-full bg-transparent"
+          value={value}
+          onChange={onChange}
+        />
+        <SlidersHorizontalIcon className="text-neutral-500 cursor-pointer" />
+      </div>
+
+      {value.length > 0 && (
+        <div className="absolute z-20 mt-2 w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 shadow-lg">
+
+          <div className="flex flex-row px-4 py-2 gap-2 border-b border-neutral-200 dark:border-neutral-700">
+            <TypeFilter filter={type} setFilter={setType} />
+            <ModifiedFilter filter={mod} setFilter={setMod} />
+          </div>
+
+          <div className="flex flex-col max-h-64 overflow-y-auto">
+            {filteredData.length === 0 && (
+              <p className="px-4 py-2 text-sm text-neutral-500">
+                No results found
+              </p>
+            )}
+
+            {filteredData.map((item, index) => (
+              <button
+                key={index}
+                type="button"
+                className="w-full text-left px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              >
+                {item.title}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex justify-between items-center px-4 py-2 border-t border-neutral-200 dark:border-neutral-700 text-sm">
+            <button type="button" className="text-blue-600 hover:underline cursor-pointer">
+              Advanced search
+            </button>
+            <button type="button" className="flex items-center gap-2 text-blue-600 hover:underline cursor-pointer">
+              <CornerDownLeft size={16} />
+              All search results
+            </button>
+          </div>
         </div>
-    )
+      )}
+    </div>
+  );
 }
 
 interface FilterProps {
@@ -123,7 +158,6 @@ function ModifiedFilter({
     setFilter
 }:FilterProps) {
   
-
   const handleModChange = (mod: string) => {
     setFilter(mod);
   };
@@ -173,5 +207,3 @@ function ModifiedFilter({
     </div>
   );
 }       
-
-

@@ -5,6 +5,7 @@ import AppBar from "./components/appBar";
 import { JSX, ReactNode, useState } from "react";
 import General from "./components/appGeneralSettings";
 
+
 export default function Page() {
   const [section, setSection] = useState<JSX.Element>(<General/>)
   return (

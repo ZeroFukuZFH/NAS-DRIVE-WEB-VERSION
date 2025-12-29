@@ -9,7 +9,7 @@ export default function ButtonGroup({
     
 }:ButtonGroupProps){
     return(
-        <div className="flex flex-row border justify-center overflow-hidden border-white border-solid rounded-2xl w-30 py-0 h-9">
+        <div className="flex flex-row border justify-center items-center overflow-hidden border-white border-solid rounded-2xl w-30  h-auto ">
             {children}
         </div>
     )

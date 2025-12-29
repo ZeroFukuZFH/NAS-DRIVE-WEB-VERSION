@@ -4,7 +4,7 @@ import { ReactNode } from "react"
 export default function General(){
     const { theme,setTheme } = useTheme();
     return (
-        <div className="flex flex-col w-full h-full">
+        <div className="flex flex-col w-full h-full ">
             <OptionWrapper>
                 <h1>Storage</h1>
             </OptionWrapper>
@@ -37,7 +37,7 @@ function OptionWrapper({
     children
 }:{children?:ReactNode}){
     return (
-        <div className="flex flex-col border-b-2 border-solid border-white w-full h-full">
+        <div className="flex flex-col border-b-2 border-solid border-white w-full h-full p-4">
             {children}
         </div>
     )
